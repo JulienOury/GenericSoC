@@ -20,9 +20,6 @@ set ::env(DESIGN_NAME) cve2
 
 set ::env(VERILOG_FILES) "\
 	$::env(CARAVEL_ROOT)/verilog/rtl/defines.v \
-	$::env(DESIGN_DIR)/../../verilog/rtl/defines.v \
-	$::env(DESIGN_DIR)/../../verilog/rtl/generic_sram_1rw1r.v \
-	$::env(DESIGN_DIR)/../../verilog/rtl/inferred_sram_1rw1r.v \
   $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/vendor/lowrisc_ip/ip/prim/rtl/prim_ram_1p_pkg.sv \
   $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_pkg.sv \
   $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_alu.sv \
