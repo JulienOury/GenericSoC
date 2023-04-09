@@ -1,0 +1,17 @@
+project:
+  description: "A Custom SoC for Efabless SKY130."
+  foundry: "SkyWater"
+  git_url: "https://github.com/JulienOury/GenericSoC.git"
+  organization: "None"
+  organization_url: "None"
+  owner: "Julien OURY"
+  process: "SKY130"
+  project_name: "GenericSoC"
+  project_id: "00000000"
+  tags:
+    - "SKY130"
+  category: "Processor"
+  top_level_netlist: "caravel/verilog/gl/caravel.v"
+  user_level_netlist: "verilog/gl/user_project_wrapper.v"
+  version: "1.00"
+  cover_image: "pictures/soc_architecture.png"
