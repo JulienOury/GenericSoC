@@ -20,29 +20,32 @@ set ::env(DESIGN_NAME) cve2
 
 set ::env(VERILOG_FILES) "\
 	$::env(CARAVEL_ROOT)/verilog/rtl/defines.v \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/vendor/lowrisc_ip/ip/prim/rtl/prim_ram_1p_pkg.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_pkg.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_alu.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_compressed_decoder.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_controller.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_cs_registers.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_counters.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_decoder.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_ex_block.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_id_stage.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_if_stage.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_wb_stage.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_load_store_unit.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_multdiv_slow.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_multdiv_fast.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_prefetch_buffer.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_fetch_fifo.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_pmp.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/rtl/cve2_core.sv \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2.sv \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/syn/rtl/prim_clock_gating.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/vendor/lowrisc_ip/ip/prim/rtl/prim_assert.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/vendor/lowrisc_ip/ip/prim/rtl/prim_ram_1p_pkg.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_pkg.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_alu.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_compressed_decoder.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_controller.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_register_file_ff.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_csr.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_cs_registers.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_counter.sv \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_decoder.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_ex_block.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_id_stage.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_if_stage.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_wb_stage.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_load_store_unit.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_multdiv_slow.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_multdiv_fast.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_prefetch_buffer.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_fetch_fifo.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_pmp.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_core.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_top.v \
+  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2.v \
   "
-  
-#$::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core/shared/rtl/prim_assert.sv \
 
 set ::env(DESIGN_IS_CORE) 0
 
@@ -51,20 +54,20 @@ set ::env(CLOCK_NET)    "clk_i"
 set ::env(CLOCK_PERIOD) "10"
 
 set ::env(FP_SIZING) absolute
-set ::env(DIE_AREA) "0 0 1200 1400"
-
+set ::env(DIE_AREA) "0 0 1000 1000"
 set ::env(FP_PIN_ORDER_CFG) $::env(DESIGN_DIR)/pin_order.cfg
 
 set ::env(PL_BASIC_PLACEMENT) 0
-set ::env(PL_TARGET_DENSITY)  0.32
+set ::env(PL_TARGET_DENSITY)  0.40
 
 #set ::env(SYNTH_USE_PG_PINS_DEFINES) "USE_POWER_PINS"
 
 set ::env(FP_CORE_UTIL) 40
 
+set ::env(SYNTH_STRATEGY) "DELAY 3"
 set ::env(SYNTH_MAX_FANOUT) 4
 
-#set ::env(PL_TIME_DRIVEN) 
+set ::env(PL_TIME_DRIVEN) 
 set ::env(PL_RESIZER_HOLD_SLACK_MARGIN) 0.25
 set ::env(GLB_RESIZER_HOLD_SLACK_MARGIN) 0.25
 

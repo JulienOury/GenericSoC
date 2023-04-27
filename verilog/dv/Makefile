@@ -23,8 +23,7 @@ define print-debug =
 @echo "------->> MAKEFILE " $(abspath $(lastword $(MAKEFILE_LIST))) " -->> target " $@
 endef
 
-
-PATTERNS = pseudorandom nec_ir_receiver string_led_controller step_motor_controller
+PATTERNS = $(shell find * -maxdepth 0 -type d)
 
 all:  ${PATTERNS}
 	$(print-debug)
