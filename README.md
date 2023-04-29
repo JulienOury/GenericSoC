@@ -5,6 +5,9 @@
 This design implements a simple generic SoC.
 
 # USAGE
+
+Tested on Ubuntu-20.04 under WSL version 2.
+
 ## Install the project
 ```
 git clone https://github.com/JulienOury/GenericSoC.git
