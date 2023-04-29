@@ -73,14 +73,14 @@ soft_gen:
 # Hardware gen
 ##########################################################################
 
-.PHONY: docker-start
-docker-start:
+.PHONY: docker_start
+docker_start:
 	- sudo service docker start
 
 # Openlane
 blocks=$(shell cd openlane && find * -maxdepth 0 -type d)
 .PHONY: $(blocks)
-$(blocks): % : docker-start
+$(blocks): % : docker_start
 	$(MAKE) -C openlane $*
 
 .PHONY: harden

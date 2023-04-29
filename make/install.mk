@@ -212,7 +212,7 @@ install_riscv_gcc: dependency_folder_check
 ##########################################################################
 
 .PHONY: install_precheck
-install_precheck: dependency_folder_check
+install_precheck: dependency_folder_check docker_start
 	
 	# Delete target folder (if needed)
 	if [ -d "$(PRECHECK_ROOT)" ]; then\
@@ -298,7 +298,7 @@ endif
 ##########################################################################
 
 .PHONY: simenv
-simenv:
+simenv: docker_start
 	docker pull efabless/dv:latest
 
 
@@ -315,3 +315,10 @@ endif
 	
   # Create folder (if not already exist)
 	mkdir -p $(DEPENDENCIES_ROOT)
+
+
+##########################################################################
+# Some install need started Docker
+##########################################################################
+docker_start:
+	- sudo service docker start
