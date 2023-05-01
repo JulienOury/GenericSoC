@@ -14,6 +14,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileContributor: Created by Julien OURY <julien.oury@outlook.fr>
 
+ifndef PRECHECK_MK
+PRECHECK_MK := 1
+
+##########################################################################
+# Includes
+##########################################################################
+
+include $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))/configuration.mk
+
+
 ##########################################################################
 # PATHs
 ##########################################################################
@@ -49,3 +59,7 @@ run-precheck:
 	-e PDKPATH=$(PDKPATH) \
 	-u $(shell id -u $(USER)):$(shell id -g $(USER)) \
 	efabless/mpw_precheck:latest bash -c "cd $(PRECHECK_ROOT) ; python3 mpw_precheck.py --input_directory $(INPUT_DIRECTORY) --pdk_path $(PDK_ROOT)/$(PDK)"
+
+
+##########################################################################
+endif

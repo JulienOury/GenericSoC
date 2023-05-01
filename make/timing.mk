@@ -14,6 +14,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileContributor: Created by Julien OURY <julien.oury@outlook.fr>
 
+ifndef TIMING_MK
+TIMING_MK := 1
+
+##########################################################################
+# Includes
+##########################################################################
+
+include $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))/configuration.mk
+
+
 ##########################################################################
 # PATHs
 ##########################################################################
@@ -95,3 +105,7 @@ caravel-sta: ./env/spef-mapping.tcl
 		| xargs -I {} tail -n1 "{}"
 	@echo =========================================================================================================
 	@echo "You can find results for all corners in $(CUP_ROOT)/signoff/caravel/openlane-signoff/timing/"
+
+
+##########################################################################
+endif

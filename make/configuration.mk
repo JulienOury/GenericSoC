@@ -14,6 +14,9 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileContributor: Created by Julien OURY <julien.oury@outlook.fr>
 
+ifndef CONFIGURATION_MK
+CONFIGURATION_MK := 1
+
 ##########################################################################
 # CONFIGURATION
 ##########################################################################
@@ -29,22 +32,29 @@ export PDK?=sky130A
 # PATHs
 ##########################################################################
 
-export PROJECT_ROOT      := $(PWD)
+export PROJECT_ROOT      := $(shell dirname $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
 export DEPENDENCIES_ROOT := $(PROJECT_ROOT)/dependencies
+export VERILOG_ROOT      := $(PROJECT_ROOT)/verilog
 
 export OPENLANE_ROOT     := $(DEPENDENCIES_ROOT)/openlane_src
 export PDK_ROOT          := $(DEPENDENCIES_ROOT)/pdks
 export RISCV             := $(DEPENDENCIES_ROOT)/riscv
 export PRECHECK_ROOT     := $(DEPENDENCIES_ROOT)/precheck
 export TIMING_ROOT       := $(DEPENDENCIES_ROOT)/timing-scripts
+export SV2V_ROOT         := $(DEPENDENCIES_ROOT)/sv2v
 
 export CARAVEL_ROOT      := $(PROJECT_ROOT)/caravel
 export MCW_ROOT          := $(PROJECT_ROOT)/mgmt_core_wrapper
 export PDKPATH           := $(PDK_ROOT)/$(PDK)
 
-export PATH              := "/home/joy/.local/bin:$(PATH)"
-export PATH              := "$(DEPENDENCIES_ROOT)/sv2v/bin:$(PATH)"
-export PATH              := "$(RISCV)/bin:/bin:$(PATH)"
+export PATH              := 
+export PATH              := $(PATH):/usr/bin
+export PATH              := $(PATH):/usr/sbin
+export PATH              := $(PATH):/usr/local/bin
+export PATH              := $(PATH):/usr/local/sbin
+export PATH              := $(PATH):$(SV2V_ROOT)/bin
+export PATH              := $(PATH):$(RISCV)/bin
+
 
 ##########################################################################
 # PDK & OPENLANE CONFIGURATION
@@ -98,3 +108,4 @@ TIMING_SCRIPTS_REPO=https://github.com/efabless/timing-scripts.git
 
 
 ##########################################################################
+endif

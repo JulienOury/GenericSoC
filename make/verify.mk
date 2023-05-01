@@ -14,6 +14,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileContributor: Created by Julien OURY <julien.oury@outlook.fr>
 
+ifndef VERIFY_MK
+VERIFY_MK := 1
+
+##########################################################################
+# Includes
+##########################################################################
+
+include $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))/configuration.mk
+
+
 ##########################################################################
 # Default configuration
 ##########################################################################
@@ -83,4 +93,6 @@ $(dv-targets-gl-sdf): SIM=GL_SDF
 $(dv-targets-gl-sdf): verify-%-gl-sdf: $(dv_base_dependencies)
 	$(docker_run_verify)
 
-	
+
+##########################################################################
+endif

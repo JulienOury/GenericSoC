@@ -31,6 +31,7 @@ include make/verify.mk
 include make/misc.mk
 include make/timing.mk
 include make/precheck.mk
+include make/sv2v_conversion.mk
 
 
 ##########################################################################
@@ -75,7 +76,10 @@ soft_gen:
 
 .PHONY: docker_start
 docker_start:
-	- sudo service docker start
+	#Start docker if not already started
+	@if ! service docker status > /dev/null 2>&1; then \
+		sudo service docker start; \
+	fi
 
 # Openlane
 blocks=$(shell cd openlane && find * -maxdepth 0 -type d)
@@ -85,7 +89,6 @@ $(blocks): % : docker_start
 
 .PHONY: harden
 harden: $(blocks)
-
 
 
 ##########################################################################

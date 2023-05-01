@@ -14,6 +14,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileContributor: Created by Julien OURY <julien.oury@outlook.fr>
 
+ifndef INSTALL_MK
+INSTALL_MK := 1
+
+##########################################################################
+# Includes
+##########################################################################
+
+include $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))/configuration.mk
+
+
 ##########################################################################
 # INSTALL / UNINSTALL all
 ##########################################################################
@@ -212,15 +222,21 @@ install_riscv_gcc: dependency_folder_check
 ##########################################################################
 
 .PHONY: install_precheck
-install_precheck: dependency_folder_check docker_start
+install_precheck: dependency_folder_check
 	
 	# Delete target folder (if needed)
 	if [ -d "$(PRECHECK_ROOT)" ]; then\
 		echo "Deleting exisiting $(PRECHECK_ROOT)" && \
 		rm -rf $(PRECHECK_ROOT) && sleep 2;\
 	fi
-
+	
 	@git clone --depth=1 --branch $(MPW_TAG) https://github.com/efabless/mpw_precheck.git $(PRECHECK_ROOT)
+	
+	#Start docker if not already started
+	@if ! service docker status > /dev/null 2>&1; then \
+		sudo service docker start; \
+	fi
+	
 	@docker pull efabless/mpw_precheck:latest
 
 
@@ -298,7 +314,13 @@ endif
 ##########################################################################
 
 .PHONY: simenv
-simenv: docker_start
+simenv:
+	
+	#Start docker if not already started
+	@if ! service docker status > /dev/null 2>&1; then \
+		sudo service docker start; \
+	fi
+	
 	docker pull efabless/dv:latest
 
 
@@ -318,7 +340,4 @@ endif
 
 
 ##########################################################################
-# Some install need started Docker
-##########################################################################
-docker_start:
-	- sudo service docker start
+endif
