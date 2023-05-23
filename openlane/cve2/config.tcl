@@ -22,8 +22,6 @@ set ::env(VERILOG_FILES) "\
 	$::env(CARAVEL_ROOT)/verilog/rtl/defines.v \
   $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/syn/rtl/prim_clock_gating.v \
   $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/vendor/lowrisc_ip/ip/prim/rtl/prim_assert.v \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/vendor/lowrisc_ip/ip/prim/rtl/prim_ram_1p_pkg.v \
-  $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_pkg.v \
   $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_alu.v \
   $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_compressed_decoder.v \
   $::env(DESIGN_DIR)/../../verilog/rtl/cve2/cve2-core-local/rtl/cve2_controller.v \

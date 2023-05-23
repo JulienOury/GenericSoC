@@ -103,9 +103,23 @@ harden: $(blocks)
 ##########################################################################
 # COCOTB verify
 ##########################################################################
-cocotb_blocks := $(shell cd $(COCOTB_ROOT) && find * -maxdepth 0 -type d)
-cocotb_blocks := $(addprefix cocotb_, $(cocotb_blocks))
-cocotb_blocks := $(addsuffix _%, $(cocotb_blocks))
+cocotb_names  := $(shell cd $(COCOTB_ROOT) && find * -maxdepth 0 -type d)
+cocotb_names    := $(filter-out common,$(cocotb_names))
+
+.PHONY: cocotb_all_%
+cocotb_all_%:
+	for i in $(cocotb_names); do \
+		export PATH=$(PATH);\
+		export MCW_ROOT=$(MCW_ROOT);\
+		export CARAVEL_ROOT=$(CARAVEL_ROOT);\
+		export VERILOG_ROOT=$(VERILOG_ROOT);\
+		export PDK_ROOT=$(PDK_ROOT);\
+		export PDK=$(PDK);\
+		cd $(COCOTB_ROOT)/$$i;\
+		$(MAKE) $*;\
+	done
+
+cocotb_blocks := $(foreach name, $(cocotb_names), cocotb_$(name)_%)
 .PHONY: $(cocotb_blocks)
 $(cocotb_blocks):
 	@{ \

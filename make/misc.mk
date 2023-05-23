@@ -37,7 +37,7 @@ clean-targets=$(blocks:%=clean-%)
 ##########################################################################
 
 .PHONY: clean
-clean: $(clean-targets) clean-dv
+clean: $(clean-targets) clean-dv soft_all_clean cocotb_all_clean
 
 .PHONY: $(clean-targets)
 $(clean-targets): clean-% :
