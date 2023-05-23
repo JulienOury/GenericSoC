@@ -42,18 +42,25 @@ export RISCV             := $(DEPENDENCIES_ROOT)/riscv
 export PRECHECK_ROOT     := $(DEPENDENCIES_ROOT)/precheck
 export TIMING_ROOT       := $(DEPENDENCIES_ROOT)/timing-scripts
 export SV2V_ROOT         := $(DEPENDENCIES_ROOT)/sv2v
+export QUESTA_ROOT       := $(HOME)/questasim
 
+export COCOTB_ROOT       := $(VERILOG_ROOT)/cocotb
 export CARAVEL_ROOT      := $(PROJECT_ROOT)/caravel
 export MCW_ROOT          := $(PROJECT_ROOT)/mgmt_core_wrapper
 export PDKPATH           := $(PDK_ROOT)/$(PDK)
 
-export PATH              := 
+export PATH              :=         $(SV2V_ROOT)/bin
+export PATH              := $(PATH):$(RISCV)/bin
+export PATH              := $(PATH):$(QUESTA_ROOT)/linux_x86_64
+export PATH              := $(PATH):$(QUESTA_ROOT)/RUVM_2021.2
 export PATH              := $(PATH):/usr/bin
 export PATH              := $(PATH):/usr/sbin
 export PATH              := $(PATH):/usr/local/bin
 export PATH              := $(PATH):/usr/local/sbin
-export PATH              := $(PATH):$(SV2V_ROOT)/bin
-export PATH              := $(PATH):$(RISCV)/bin
+export PATH              := $(PATH):$(HOME)/.local/bin
+
+export LM_LICENSE_FILE   := $(QUESTA_ROOT)/license.dat
+export FLEXLM_DIAGNOSTICS = 10
 
 
 ##########################################################################

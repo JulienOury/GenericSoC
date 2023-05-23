@@ -48,7 +48,7 @@ sv2v_delete_converted: cve2_delete_converted \
 export CVE2_ROOT := $(VERILOG_ROOT)/rtl/cve2
 
 .PHONY: cve2_convert
-cve2_convert:
+cve2_convert: cve2_delete_converted
 	export PATH=${PATH} && \
 	sv2v -w adjacent                                                       \
 		--define=SYNTHESIS                                                   \
@@ -63,6 +63,7 @@ cve2_convert:
 		"$(CVE2_ROOT)/cve2-core-local/rtl/cve2_cs_registers.sv"                         \
 		"$(CVE2_ROOT)/cve2-core-local/rtl/cve2_load_store_unit.sv"                      \
 		"$(CVE2_ROOT)/cve2-core-local/rtl/cve2_prefetch_buffer.sv"                      \
+		"$(CVE2_ROOT)/cve2-core-local/rtl/cve2_counter.sv"                              \
 		"$(CVE2_ROOT)/cve2-core-local/rtl/cve2_decoder.sv"                              \
 		"$(CVE2_ROOT)/cve2-core-local/rtl/cve2_ex_block.sv"                             \
 		"$(CVE2_ROOT)/cve2-core-local/rtl/cve2_id_stage.sv"                             \
@@ -93,6 +94,7 @@ cve2_delete_converted:
 	rm -f $(CVE2_ROOT)/cve2-core-local/rtl/cve2_cs_registers.v
 	rm -f $(CVE2_ROOT)/cve2-core-local/rtl/cve2_load_store_unit.v
 	rm -f $(CVE2_ROOT)/cve2-core-local/rtl/cve2_prefetch_buffer.v
+	rm -f $(CVE2_ROOT)/cve2-core-local/rtl/cve2_counter.v
 	rm -f $(CVE2_ROOT)/cve2-core-local/rtl/cve2_decoder.v
 	rm -f $(CVE2_ROOT)/cve2-core-local/rtl/cve2_ex_block.v
 	rm -f $(CVE2_ROOT)/cve2-core-local/rtl/cve2_id_stage.v
@@ -114,7 +116,7 @@ cve2_delete_converted:
 export AXI_ROOT  := $(VERILOG_ROOT)/rtl/axi
 
 .PHONY: axi_convert
-axi_convert:
+axi_convert: axi_delete_converted
 	- export PATH=${PATH} && \
 	sv2v -w adjacent                                                  \
 		--define=SYNTHESIS                                              \

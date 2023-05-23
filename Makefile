@@ -92,6 +92,26 @@ harden: $(blocks)
 
 
 ##########################################################################
+# COCOTB verify
+##########################################################################
+cocotb_blocks := $(shell cd $(COCOTB_ROOT) && find * -maxdepth 0 -type d)
+cocotb_blocks := $(addprefix cocotb_, $(cocotb_blocks))
+cocotb_blocks := $(addsuffix _%, $(cocotb_blocks))
+.PHONY: $(cocotb_blocks)
+$(cocotb_blocks):
+	@{ \
+	export PATH=$(PATH);\
+	export MCW_ROOT=$(MCW_ROOT);\
+	export CARAVEL_ROOT=$(CARAVEL_ROOT);\
+	export VERILOG_ROOT=$(VERILOG_ROOT);\
+	export PDK_ROOT=$(PDK_ROOT);\
+	export PDK=$(PDK);\
+	cd $(COCOTB_ROOT)/$(subst cocotb_,,$(subst _$*,,$@));\
+	$(MAKE) $*;\
+	}
+
+
+##########################################################################
 #### Others
 
 # Create symbolic links to caravel's main files

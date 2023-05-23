@@ -38,6 +38,7 @@ install: install_cmds           \
 				 install_precheck       \
 				 install_openlane       \
 				 install_timing_scripts \
+				 install_cocotb         \
 				 simenv
 
 .PHONY: uninstall
@@ -85,6 +86,10 @@ install_cmds:
 	sudo apt-get install curl                    --assume-yes
 	sudo apt-get install gnupg                   --assume-yes
 	sudo apt-get install lsb-release             --assume-yes
+	
+	# install iverilog and gtkwave
+	sudo apt-get install iverilog                --assume-yes
+	sudo apt-get install gtkwave                 --assume-yes
 
 	# install DOCKER
 	sudo apt-get remove docker                   --assume-yes
@@ -307,6 +312,18 @@ endif
 	
 	@( cd $(TIMING_ROOT) && git pull )
 	@#( cd $(TIMING_ROOT) && git fetch && git checkout $(MPW_TAG); )
+
+
+##########################################################################
+# INSTALL cocotb
+##########################################################################
+
+.PHONY: install_cocotb
+install_cocotb:
+	
+	# Install cocotb (possible option : --target=$(COCOTB_ROOT) --ignore-installed)
+	pip install --upgrade --force-reinstall cocotb
+	pip install --upgrade --force-reinstall pytest
 
 
 ##########################################################################
