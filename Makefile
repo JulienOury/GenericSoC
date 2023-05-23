@@ -64,10 +64,19 @@ remove: clean uninstall
 ##########################################################################
 # Software gen
 ##########################################################################
+soft_names = $(shell cd $(SOFT_ROOT) && find * -maxdepth 0 -type d)
+soft_names := $(filter-out common,$(soft_names))
 
-.PHONY: soft_gen
-soft_gen:
-	export PATH=${PATH} && export PROGRAM_CFLAGS="" && cd ./soft/simple_system/hello_test && $(MAKE)
+.PHONY: soft_all_%
+soft_all_%:
+	for i in $(soft_names); do \
+		(export PATH=${PATH} && export PROGRAM_CFLAGS="" && cd $(SOFT_ROOT)/$$i && $(MAKE) $*) ; \
+	done
+
+soft_blocks := $(foreach name, $(soft_names), soft_$(name)_%)
+.PHONY: $(soft_blocks)
+$(soft_blocks):
+	export PATH=${PATH} && export PROGRAM_CFLAGS="" && cd $(SOFT_ROOT)/$(subst soft_,,$(subst _$*,,$@)) && $(MAKE) $*
 
 
 ##########################################################################

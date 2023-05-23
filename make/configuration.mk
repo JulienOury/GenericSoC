@@ -47,6 +47,7 @@ export QUESTA_ROOT       := $(HOME)/questasim
 export COCOTB_ROOT       := $(VERILOG_ROOT)/cocotb
 export CARAVEL_ROOT      := $(PROJECT_ROOT)/caravel
 export MCW_ROOT          := $(PROJECT_ROOT)/mgmt_core_wrapper
+export SOFT_ROOT         := $(PROJECT_ROOT)/soft
 export PDKPATH           := $(PDK_ROOT)/$(PDK)
 
 export PATH              :=         $(SV2V_ROOT)/bin

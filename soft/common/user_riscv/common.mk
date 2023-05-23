@@ -34,12 +34,13 @@ OBJS := ${C_SRCS:.c=.o} ${ASM_SRCS:.S=.o} ${CRT:.S=.o}
 DEPS = $(OBJS:%.o=%.d)
 
 ifdef PROGRAM
-OUTFILES := $(PROGRAM).elf $(PROGRAM).vmem $(PROGRAM).bin
+OUTFILES := $(PROGRAM).elf $(PROGRAM).vmem $(PROGRAM).bin $(PROGRAM).hex
 else
 OUTFILES := $(OBJS)
 endif
 
-all: $(OUTFILES)
+all: clean compile
+compile: $(OUTFILES)
 
 ifdef PROGRAM
 $(PROGRAM).elf: $(OBJS) $(LINKER_SCRIPT)
@@ -48,6 +49,11 @@ $(PROGRAM).elf: $(OBJS) $(LINKER_SCRIPT)
 .PHONY: disassemble
 disassemble: $(PROGRAM).dis
 endif
+
+%.hex: %.elf
+	${GCC_PREFIX}-objcopy -O verilog $< $@ 
+	# to fix flash base address
+	sed -ie 's/@10/@00/g' $@
 
 %.dis: %.elf
 	$(OBJDUMP) -fhSD $^ > $@
@@ -70,6 +76,7 @@ endif
 
 clean:
 	$(RM) -f $(OBJS) $(DEPS)
+	\rm  -f *.elf *.hex *.bin *.hexe *.vmem
 
 distclean: clean
 	$(RM) -f $(OUTFILES)
