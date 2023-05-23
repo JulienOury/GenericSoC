@@ -74,15 +74,19 @@ simu: clean_simu
 .PHONY: clean_simu
 clean_simu:
 
-	rm -rf $(CUR_MK_DIR)/sim_build
-	rm -rf $(CUR_MK_DIR)/__pycache__
+	# files
 	rm -f  $(CUR_MK_DIR)/*.log
 	rm -f  $(CUR_MK_DIR)/*.ini
 	rm -f  $(CUR_MK_DIR)/*.vcd
+	rm -f  $(CUR_MK_DIR)/*.vstf
+	rm -f  $(CUR_MK_DIR)/*.wlf
 	rm -f  $(CUR_MK_DIR)/transcript
 	rm -f  $(CUR_MK_DIR)/results.xml
 	
+	# directories
+	rm -rf $(CUR_MK_DIR)/__pycache__
 	rm -rf $(CUR_MK_DIR)/sim
+	rm -rf $(CUR_MK_DIR)/sim_build
 
 
 ##########################################################################
