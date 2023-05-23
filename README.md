@@ -8,36 +8,25 @@ This design implements a simple generic SoC.
 
 Tested on Ubuntu-20.04 under WSL version 2.
 
-## Install the project
-```
-git clone https://github.com/JulienOury/GenericSoC.git
-cd GenericSoC
-make setup
-```
-## Compile the project
-```
-make cve2
-```
-## Run RTL simulations
-```
-make verify-all-rtl
-```
-## Run GL simulation
-```
-make verify-all-gl
-```
-## ZIP ASIC database files
-```
-make zip
-```
-## UNZIP ASIC database files
-```
-make unzip
-```
-## Clean
-```
-make clean
-```
+| Makefile target                                      | Description                                                       |
+|------------------------------------------------------|-------------------------------------------------------------------|
+| make setup                                           | Install the project                                               |
+| make cve2                                            | Compile the project (ASIC flow : synthesis/P&R/STA/GDS2)          |
+| make soft_all_compile                                | Compile all embedded [`softwares`](soft/)                         |
+| make soft_all_clean                                  | Clean all embedded [`softwares`](soft/)                           |
+| make soft_%_compile                                  | Compile % specific embedded [`software`](soft/)                   |
+| make soft_%_clean                                    | Clean % specific embedded [`software`](soft/)                     |
+| make cocotb_all_simu                                 | Run all CocoTB [`simulations`](verilog/cocotb/)                   |
+| make cocotb_all_clean                                | Clean all CocoTB [`simulations`](verilog/cocotb/)                 |
+| make cocotb_%_simu                                   | Run % specific CocoTB [`simulations`](verilog/cocotb/)            |
+| make cocotb_%_clean                                  | Clean % specific CocoTB [`simulations`](verilog/cocotb/)          |
+| make verify-all-rtl                                  | Run RTL simulations                                               |
+| make verify-all-gl                                   | Run GL simulation                                                 |
+| make zip                                             | ZIP ASIC database files                                           |
+| make unzip                                           | UNZIP ASIC database files                                         |
+| make clean                                           | Clean (ASIC flow, softs, cocotb, simulations)                     |
+
+## Others
 
 Refer to [README](docs/source/index.rst#section-quickstart) for a quickstart of how to use caravel_user_project
 
