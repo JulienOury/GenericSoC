@@ -877,8 +877,7 @@ module cve2_cs_registers (
 		.counterh_we_i(mhpmcounterh_we[0]),
 		.counter_we_i(mhpmcounter_we[0]),
 		.counter_val_i(csr_wdata_int),
-		.counter_val_o(mhpmcounter[0]),
-		.counter_val_upd_o()
+		.counter_val_o(mhpmcounter[0])
 	);
 	cve2_counter #(
 		.CounterWidth(64),

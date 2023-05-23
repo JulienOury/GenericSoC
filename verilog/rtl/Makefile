@@ -116,6 +116,64 @@ simulate:
 
 #-suppress 3013,2732
 
+sv2v_conversion:
+	export PATH=${PATH} && \
+	sv2v -w adjacent                                                       \
+		--define=SYNTHESIS                                                   \
+		"./cve2-core-local/rtl/cve2_pkg.sv"                                  \
+		"./cve2-core-local/vendor/lowrisc_ip/ip/prim/rtl/prim_assert.sv"     \
+		"./cve2-core-local/vendor/lowrisc_ip/ip/prim/rtl/prim_secded_pkg.sv" \
+		"./cve2-core-local/vendor/lowrisc_ip/ip/prim/rtl/prim_ram_1p_pkg.sv" \
+		"./cve2-core-local/rtl/cve2_alu.sv"                                  \
+		"./cve2-core-local/rtl/cve2_compressed_decoder.sv"                   \
+		"./cve2-core-local/rtl/cve2_controller.sv"                           \
+		"./cve2-core-local/rtl/cve2_csr.sv"                                  \
+		"./cve2-core-local/rtl/cve2_cs_registers.sv"                         \
+		"./cve2-core-local/rtl/cve2_load_store_unit.sv"                      \
+		"./cve2-core-local/rtl/cve2_prefetch_buffer.sv"                      \
+		"./cve2-core-local/rtl/cve2_decoder.sv"                              \
+		"./cve2-core-local/rtl/cve2_ex_block.sv"                             \
+		"./cve2-core-local/rtl/cve2_id_stage.sv"                             \
+		"./cve2-core-local/rtl/cve2_if_stage.sv"                             \
+		"./cve2-core-local/rtl/cve2_wb_stage.sv"                             \
+		"./cve2-core-local/rtl/cve2_multdiv_slow.sv"                         \
+		"./cve2-core-local/rtl/cve2_multdiv_fast.sv"                         \
+		"./cve2-core-local/rtl/cve2_fetch_fifo.sv"                           \
+		"./cve2-core-local/rtl/cve2_pmp.sv"                                  \
+		"./cve2-core-local/rtl/cve2_register_file_ff.sv"                     \
+		"./cve2-core-local/rtl/cve2_core.sv"                                 \
+		"./cve2-core-local/rtl/cve2_top.sv"                                  \
+		"./cve2.sv"
+	rm -f ./cve2-core-local/rtl/cve2_pkg.v
+	rm -f ./cve2-core-local/vendor/lowrisc_ip/ip/prim/rtl/prim_ram_1p_pkg.v
+	rm -f ./cve2-core-local/vendor/lowrisc_ip/ip/prim/rtl/prim_secded_pkg.v
+
+delete_converted:
+	rm -f ./cve2-core-local/rtl/cve2_pkg.v
+	rm -f ./cve2-core-local/vendor/lowrisc_ip/ip/prim/rtl/prim_assert.v
+	rm -f ./cve2-core-local/vendor/lowrisc_ip/ip/prim/rtl/prim_secded_pkg.v
+	rm -f ./cve2-core-local/vendor/lowrisc_ip/ip/prim/rtl/prim_ram_1p_pkg.v
+	rm -f ./cve2-core-local/rtl/cve2_alu.v
+	rm -f ./cve2-core-local/rtl/cve2_compressed_decoder.v
+	rm -f ./cve2-core-local/rtl/cve2_controller.v
+	rm -f ./cve2-core-local/rtl/cve2_csr.v
+	rm -f ./cve2-core-local/rtl/cve2_cs_registers.v
+	rm -f ./cve2-core-local/rtl/cve2_load_store_unit.v
+	rm -f ./cve2-core-local/rtl/cve2_prefetch_buffer.v
+	rm -f ./cve2-core-local/rtl/cve2_decoder.v
+	rm -f ./cve2-core-local/rtl/cve2_ex_block.v
+	rm -f ./cve2-core-local/rtl/cve2_id_stage.v
+	rm -f ./cve2-core-local/rtl/cve2_if_stage.v
+	rm -f ./cve2-core-local/rtl/cve2_wb_stage.v
+	rm -f ./cve2-core-local/rtl/cve2_multdiv_slow.v
+	rm -f ./cve2-core-local/rtl/cve2_multdiv_fast.v
+	rm -f ./cve2-core-local/rtl/cve2_fetch_fifo.v
+	rm -f ./cve2-core-local/rtl/cve2_pmp.v
+	rm -f ./cve2-core-local/rtl/cve2_register_file_ff.v
+	rm -f ./cve2-core-local/rtl/cve2_core.v
+	rm -f ./cve2-core-local/rtl/cve2_top.v
+	rm -f ./cve2.v
+
 clean:
 	rm -f transcript *.wlf work/*.*
  

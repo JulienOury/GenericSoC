@@ -78,8 +78,8 @@ module cve2 (
   localparam int unsigned DmHaltAddr       = 32'h1A110800;
   localparam int unsigned DmExceptionAddr  = 32'h1A110808;
   
-  localparam logic [31:0] hart_id_i        = 32'h1234ABCD;
-  localparam logic [31:0] boot_addr_i      = 32'h00000000;
+  localparam logic [31:0] hart_id_i        = 32'h00000001;
+  localparam logic [31:0] boot_addr_i      = 32'h30000000;
   
   localparam prim_ram_1p_pkg::ram_1p_cfg_t ram_cfg_i = prim_ram_1p_pkg::RAM_1P_CFG_DEFAULT;
   
