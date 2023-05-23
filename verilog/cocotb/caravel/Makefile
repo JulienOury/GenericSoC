@@ -45,10 +45,10 @@ endif
 ##########################################################################
 
 .PHONY: all
-all: clean build_soft simu
+all: clean simu
 
 .PHONY: clean
-clean: clean_soft clean_simu
+clean: clean_simu
 
 
 ##########################################################################
@@ -87,29 +87,6 @@ clean_simu:
 	rm -rf $(CUR_MK_DIR)/__pycache__
 	rm -rf $(CUR_MK_DIR)/sim
 	rm -rf $(CUR_MK_DIR)/sim_build
-
-
-##########################################################################
-# Software
-##########################################################################
-
-.PHONY: build_soft
-build_soft: clean_soft
-	@{ \
-	export PATH=$(PATH);\
-	export MCW_ROOT=$(MCW_ROOT);\
-	cd $(CUR_MK_DIR)/hex_files/nec_ir_receiver;\
-	$(MAKE);\
-	}
-
-.PHONY: clean_soft
-clean_soft:
-	@{ \
-	export PATH=$(PATH);\
-	export MCW_ROOT=$(MCW_ROOT);\
-	cd $(CUR_MK_DIR)/hex_files/nec_ir_receiver;\
-	$(MAKE) clean;\
-	}
 
 
 ##########################################################################
