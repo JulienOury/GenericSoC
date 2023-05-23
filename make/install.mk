@@ -75,7 +75,7 @@ install_cmds:
 	sudo apt-get install pkg-config              --assume-yes
 	sudo apt-get install python3                 --assume-yes
 	sudo apt-get install python3-pip             --assume-yes
-	sudo apt-get install python3.8-venv          --assume-yes
+	sudo apt-get install python3-venv            --assume-yes
 	sudo apt-get install libboost-system-dev     --assume-yes
 	sudo apt-get install libboost-python-dev     --assume-yes
 	sudo apt-get install libboost-filesystem-dev --assume-yes
