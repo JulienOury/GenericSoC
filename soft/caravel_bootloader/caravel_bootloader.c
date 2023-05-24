@@ -19,6 +19,7 @@
 // This include is relative to $CARAVEL_PATH (see Makefile)
 #include <defs.h>
 #include <stub.c>
+#include <user_system.h>
 
 /*
   Bootloader:
@@ -28,12 +29,8 @@
     - Wait forever
 */
 
-#define reg_mprj_ir_cmd        (*(volatile uint32_t*)0x30000000)
-#define reg_mprj_ir_multiplier (*(volatile uint32_t*)0x30000004)
-#define reg_mprj_ir_divider    (*(volatile uint32_t*)0x30000008)
-#define reg_mprj_ir_data       (*(volatile uint32_t*)0x3000000C)
-
-#define reg_mprj_sys_mng       (*(volatile uint32_t*)0x30001000)
+#define flash_user_program_addr ((volatile uint32_t*) 0x10800000)
+#define flash_user_program_size 0x800
 
 void main() {
 
@@ -104,33 +101,15 @@ void main() {
   reg_mprj_xfer = 1;
   while (reg_mprj_xfer == 1);
 	
-  // PreBoot MGMT GPIO blinking
-	for (int i = 0; i < 10; i++) {
-		/* Fast blink for simulation */
-		reg_gpio_out = 1;
-		reg_gpio_out = 0;
+  // Copy program
+	for (int i = 0; i < (flash_user_program_size/4); i++) {
+		addr_mprj_internal_ram[i] = flash_user_program_addr[i];
 	}
 	
-	//reg_mprj_sys_mng = 0x1A2B3C01;
+	// Start CVE2 user processor
+	reg_mprj_sys_mng = SYS_MNG_START_CODE;
 	
-	reg_mprj_sys_mng = 0x1A2B3C00;
-
-//  // Configuration of IR receiver
-//  // - Protocol tick period divided by 10 for simulation speed-up
-//  reg_mprj_ir_multiplier = 0x00000064;
-//  reg_mprj_ir_divider    = 0x00006DDD;
-//  reg_mprj_ir_cmd        = 0x94000000;
-//
-//  // Flag start of the test
-//  reg_mprj_datal = 0xAB600000;
-//
-//  // Wait data from IR receiver
-//  int ir_data;
-//  do {
-//     ir_data = reg_mprj_ir_data;
-//  } while ((ir_data & 0x80000000) != 0x80000000 );
-//
-//  //Flage end of the test (and provide IR received data)
-//  reg_mprj_datal = 0xAB610000 | (ir_data & 0x0000FFFF) ;
+  // End of bootloader : set GPIO to 1
+  reg_gpio_out = 1;
 
 }

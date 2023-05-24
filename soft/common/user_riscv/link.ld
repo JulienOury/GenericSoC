@@ -10,12 +10,12 @@ MEMORY
    BRAM space. Configuration below is for maximum BRAM capacity with Artya A7-35 while letting
    CoreMark run (.vmem of 152.8KB).
 */
-    ram         : ORIGIN = 0x00100000, LENGTH = 0x30000 /* 192 kB */
-    stack       : ORIGIN = 0x00130000, LENGTH = 0x8000  /* 32 kB */
+    ram         : ORIGIN = 0x30000000, LENGTH = 0x800  /*   2 kB */
+    stack       : ORIGIN = 0x30000800, LENGTH = 0x400  /*   1 kB */
 }
 
 /* Stack information variables */
-_min_stack      = 0x2000;   /* 8K - minimum stack space to reserve */
+_min_stack      = 0x400;   /* 1K - minimum stack space to reserve */
 _stack_len     = LENGTH(stack);
 _stack_start   = ORIGIN(stack) + LENGTH(stack);
 
