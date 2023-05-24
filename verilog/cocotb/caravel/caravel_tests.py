@@ -14,22 +14,37 @@ import logging
 import inspect
 import os
 
+
+import interfaces.board
+from   interfaces.board import Board
+
+import interfaces.hex_file_manager
+from   interfaces.hex_file_manager import HexFileManager
+
+###import interfaces.caravel
+###from   interfaces.logic_analyzer import LA
+###from   interfaces.caravel import GPIO_MODE, Caravel_env
+###import interfaces.common as common
+###from   interfaces.cpu import RiskV
+###from   interfaces.defsParser import Regs
+
 ###from   cocotb.clock import Clock
 ###import cocotb.log
 ###import cocotb.simulator
 ###from   cocotb_coverage.coverage import *
 ###from   cocotb.binary import BinaryValue
-###import interfaces.caravel 
-###from   interfaces.logic_analyzer import LA
-###from   interfaces.caravel import GPIO_MODE, Caravel_env
 ###from   wb_models.housekeepingWB.housekeepingWB import HK_whiteBox
-###import interfaces.common as common
-###from   interfaces.cpu import RiskV
-###from   interfaces.defsParser import Regs
 ###from   tests.common_functions.Timeout import Timeout
 
 # tests
 ###from tests.bitbang.bitbang_tests import *
+
+SOFT_DIR = '../../../soft/'
+BOOTLOADER_PATH   = f'{SOFT_DIR}caravel_bootloader/caravel_bootloader.hex'
+HELLO_TEST_PATH   = f'{SOFT_DIR}hello_test/hello_test.hex'
+
+FLASH_PROG_PATH   = 'caravel_th.hex'
+FLASH_PROG_OFFSET = 0x00800000 #8MB
 
 
 # archive tests
@@ -47,19 +62,36 @@ async def test_boot(dut):
   handler.setFormatter(SimLogFormatter())
   cocotb.log.addHandler(handler)
   
-#  await Timer(1, units='ms')  # Attendre pendant 10 secondes
+  caravel_board = Board(dut)
   
-  cocotb.log.info(f"Trigger load file")
+  await Timer(1, units='ms')  # Attendre pendant 1 ms
+  
+  # Generate test program
+  cocotb.log.info(f"Generate test program")
+  hex_file_mng = HexFileManager(FLASH_PROG_PATH)
+  hex_file_mng.generate_program_with_bootloader(BOOTLOADER_PATH, HELLO_TEST_PATH, FLASH_PROG_OFFSET)
+  
+  # Load program file
+  cocotb.log.info(f"Load program file")
+  dut.reload_file.value = 0
+  await NextTimeStep()
   dut.reload_file.value = 1
   await NextTimeStep()
   dut.reload_file.value = 0
+  await NextTimeStep()
   
-  try:
-    await with_timeout(RisingEdge(dut.gpio), 10, 'ms')
-  except cocotb.triggers.TimeoutError:
-    error += 1
+  # Start program (release caravel reset)
+  cocotb.log.info(f"Start program (release caravel reset)")
+  await caravel_board.start_up();
   
-  await Timer(1, units='sec')  # Attendre pendant 10 secondes
+  #try:
+  await with_timeout(RisingEdge(dut.gpio), 1, 'sec')
+  #except cocotb.triggers.TimeoutError:
+  #except cocotb.result.SimTimeoutError:
+  #  error += 1
+  
+  await Timer(10, units='ms')  # Attendre pendant 10 ms
+  #await Timer(1, units='sec')  # Attendre pendant 10 secondes
   
   if (error == 0): 
     raise TestSuccess(f" TEST {TestName} passed")
