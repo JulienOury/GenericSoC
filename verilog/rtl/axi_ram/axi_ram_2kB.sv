@@ -17,7 +17,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-module axi_ram_1kB#(
+module axi_ram_2kB#(
   parameter int unsigned ID_WIDTH   = 32'd0, // AXI4+ATOP ID width
   parameter int unsigned USER_WIDTH = 32'd0  // AXI4+ATOP user width
 )(
@@ -39,7 +39,7 @@ module axi_ram_1kB#(
 // Local parameters
 ////////////////////////////////////////////////////////////////////////////
 
-  localparam int unsigned ADDR_WIDTH     = 32'd10; // Address width, has to be less or equal than the width off the AXI address field. Determines the width of `mem_addr_o`. Has to be wide enough to emit the memory region which should be accessible.
+  localparam int unsigned ADDR_WIDTH     = 32'd11; // Address width, has to be less or equal than the width off the AXI address field. Determines the width of `mem_addr_o`. Has to be wide enough to emit the memory region which should be accessible.
   localparam int unsigned DATA_WIDTH     = 32'd32; // AXI4+ATOP data width.
   localparam int unsigned NUM_BANKS      =  32'd1; // Number of banks at output, must evenly divide `DATA_WIDTH`.
   localparam int unsigned BUF_DEPTH      =  32'd1; // Depth of memory response buffer. This should be equal to the memory response latency.
@@ -127,7 +127,7 @@ module axi_ram_1kB#(
 		assign mem_gnt[i] = 1'b1       ;
 	end
   
-  sky130_sram_1kbyte_1rw1r_32x256_8 inst_mem (
+  sky130_sram_2kbyte_1rw1r_32x512_8 inst_mem (
   `ifdef USE_POWER_PINS
     .vccd1 (vccd1            ),
     .vssd1 (vssd1            ),
@@ -137,13 +137,13 @@ module axi_ram_1kB#(
     .csb0  (mem_csb[0]       ),
     .web0  (mem_web[0]       ),
     .wmask0(mem_strb[0]      ),
-    .addr0 (mem_addr[0][9:2] ),
+    .addr0 (mem_addr[0][10:2]),
     .din0  (mem_wdata[0]     ),
     .dout0 (mem_rdata[0]     ),
     // Port 1: R (not used)
     .clk1  (1'b0             ),
     .csb1  (1'b1             ),
-    .addr1 (8'b0             ),
+    .addr1 (9'b0             ),
     .dout1 (dummy_mem_dout[0])
   );
 
