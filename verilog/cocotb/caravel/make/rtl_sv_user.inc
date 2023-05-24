@@ -58,6 +58,7 @@ $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2-core-local/rtl/cve2_core.sv
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2-core-local/rtl/cve2_tracer_pkg.sv                           ) ##Not added in sv2v conversion (only for RVFI)
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2-core-local/rtl/cve2_tracer.sv                               ) ##Not added in sv2v conversion (only for RVFI)
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2-core-local/rtl/cve2_top.sv                                  )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2_async_reset_isolator.sv                                     ) ##Not added in sv2v conversion 
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2.sv                                                          )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/wb2axi/wbm2axisp.v                                                    )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/wb2axi/skidbuffer.v                                                   )

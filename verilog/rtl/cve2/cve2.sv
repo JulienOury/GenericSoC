@@ -26,6 +26,7 @@ module cve2 (
   // Clock and Reset
   input  logic                         clk_i                  ,
   input  logic                         rst_ni                 ,
+  input  logic                         clear_ni               ,
 
   input  logic                         test_en_i              , // enable all clock gates for testing
 
@@ -88,38 +89,127 @@ module cve2 (
   //ram_cfg_i.rf_cfg.cfg_en  = 1'b0;
   //ram_cfg_i.rf_cfg.cfg     = 4'b0000;
 	
+  wire         proc_clk               ;
+  wire         proc_rst_n             ;
+  wire         proc_test_en           ;
+  wire         proc_instr_req         ;
+  wire         proc_instr_gnt         ;
+  wire         proc_instr_rvalid      ;
+  wire [31:0]  proc_instr_addr        ;
+  wire [31:0]  proc_instr_rdata       ;
+  wire         proc_instr_err         ;
+  wire         proc_data_req          ;
+  wire         proc_data_gnt          ;
+  wire         proc_data_rvalid       ;
+  wire         proc_data_we           ;
+  wire [3:0]   proc_data_be           ;
+  wire [31:0]  proc_data_addr         ;
+  wire [31:0]  proc_data_wdata        ;
+  wire [31:0]  proc_data_rdata        ;
+  wire         proc_data_err          ;
+  wire         proc_irq_software      ;
+  wire         proc_irq_timer         ;
+  wire         proc_irq_external      ;
+  wire [14:0]  proc_irq_fast          ;
+  wire         proc_irq_nm            ;
+  wire         proc_debug_req         ;
+  wire         proc_core_sleep        ;
+  wire         proc_scan_rst_n        ;
+	
 	wire [  6:0] dummy_data_wdata_intg_o;
 	wire [127:0] dummy_crash_dump_o     ;
 	
 `ifdef RVFI
-  logic        rvfi_valid         ;
-  logic [63:0] rvfi_order         ;
-  logic [31:0] rvfi_insn          ;
-  logic        rvfi_trap          ;
-  logic        rvfi_halt          ;
-  logic        rvfi_intr          ;
-  logic [ 1:0] rvfi_mode          ;
-  logic [ 1:0] rvfi_ixl           ;
-  logic [ 4:0] rvfi_rs1_addr      ;
-  logic [ 4:0] rvfi_rs2_addr      ;
-  logic [ 4:0] rvfi_rs3_addr      ;
-  logic [31:0] rvfi_rs1_rdata     ;
-  logic [31:0] rvfi_rs2_rdata     ;
-  logic [31:0] rvfi_rs3_rdata     ;
-  logic [ 4:0] rvfi_rd_addr       ;
-  logic [31:0] rvfi_rd_wdata      ;
-  logic [31:0] rvfi_pc_rdata      ;
-  logic [31:0] rvfi_pc_wdata      ;
-  logic [31:0] rvfi_mem_addr      ;
-  logic [ 3:0] rvfi_mem_rmask     ;
-  logic [ 3:0] rvfi_mem_wmask     ;
-  logic [31:0] rvfi_mem_rdata     ;
-  logic [31:0] rvfi_mem_wdata     ;
-  logic [31:0] rvfi_ext_mip       ;
-  logic        rvfi_ext_nmi       ;
-  logic        rvfi_ext_debug_req ;
-  logic [63:0] rvfi_ext_mcycle    ;
+  logic        rvfi_valid             ;
+  logic [63:0] rvfi_order             ;
+  logic [31:0] rvfi_insn              ;
+  logic        rvfi_trap              ;
+  logic        rvfi_halt              ;
+  logic        rvfi_intr              ;
+  logic [ 1:0] rvfi_mode              ;
+  logic [ 1:0] rvfi_ixl               ;
+  logic [ 4:0] rvfi_rs1_addr          ;
+  logic [ 4:0] rvfi_rs2_addr          ;
+  logic [ 4:0] rvfi_rs3_addr          ;
+  logic [31:0] rvfi_rs1_rdata         ;
+  logic [31:0] rvfi_rs2_rdata         ;
+  logic [31:0] rvfi_rs3_rdata         ;
+  logic [ 4:0] rvfi_rd_addr           ;
+  logic [31:0] rvfi_rd_wdata          ;
+  logic [31:0] rvfi_pc_rdata          ;
+  logic [31:0] rvfi_pc_wdata          ;
+  logic [31:0] rvfi_mem_addr          ;
+  logic [ 3:0] rvfi_mem_rmask         ;
+  logic [ 3:0] rvfi_mem_wmask         ;
+  logic [31:0] rvfi_mem_rdata         ;
+  logic [31:0] rvfi_mem_wdata         ;
+  logic [31:0] rvfi_ext_mip           ;
+  logic        rvfi_ext_nmi           ;
+  logic        rvfi_ext_debug_req     ;
+  logic [63:0] rvfi_ext_mcycle        ;
 `endif
+
+  cve2_async_reset_isolator u_cve2_async_reset_isolator (
+  
+    // Synchronous clear
+    .clear_n        (clear_ni          ),
+  
+    // BUS SIDE
+    .clk_i          (clk_i             ),
+    .rst_ni         (rst_ni            ),
+    .test_en_i      (test_en_i         ),
+    .instr_req_o    (instr_req_o       ),
+    .instr_gnt_i    (instr_gnt_i       ),
+    .instr_rvalid_i (instr_rvalid_i    ),
+    .instr_addr_o   (instr_addr_o      ),
+    .instr_rdata_i  (instr_rdata_i     ),
+    .instr_err_i    (instr_err_i       ),
+    .data_req_o     (data_req_o        ),
+    .data_gnt_i     (data_gnt_i        ),
+    .data_rvalid_i  (data_rvalid_i     ),
+    .data_we_o      (data_we_o         ),
+    .data_be_o      (data_be_o         ),
+    .data_addr_o    (data_addr_o       ),
+    .data_wdata_o   (data_wdata_o      ),
+    .data_rdata_i   (data_rdata_i      ),
+    .data_err_i     (data_err_i        ),
+    .irq_software_i (irq_software_i    ),
+    .irq_timer_i    (irq_timer_i       ),
+    .irq_external_i (irq_external_i    ),
+    .irq_fast_i     (irq_fast_i        ),
+    .irq_nm_i       (irq_nm_i          ),
+    .debug_req_i    (debug_req_i       ),
+    .core_sleep_o   (core_sleep_o      ),
+    .scan_rst_ni    (scan_rst_ni       ),
+  
+    // PROC SIDE
+    .clk_o          (proc_clk          ),
+    .rst_no         (proc_rst_n        ),
+    .test_en_o      (proc_test_en      ),
+    .instr_req_i    (proc_instr_req    ),
+    .instr_gnt_o    (proc_instr_gnt    ),
+    .instr_rvalid_o (proc_instr_rvalid ),
+    .instr_addr_i   (proc_instr_addr   ),
+    .instr_rdata_o  (proc_instr_rdata  ),
+    .instr_err_o    (proc_instr_err    ),
+    .data_req_i     (proc_data_req     ),
+    .data_gnt_o     (proc_data_gnt     ),
+    .data_rvalid_o  (proc_data_rvalid  ),
+    .data_we_i      (proc_data_we      ),
+    .data_be_i      (proc_data_be      ),
+    .data_addr_i    (proc_data_addr    ),
+    .data_wdata_i   (proc_data_wdata   ),
+    .data_rdata_o   (proc_data_rdata   ),
+    .data_err_o     (proc_data_err     ),
+    .irq_software_o (proc_irq_software ),
+    .irq_timer_o    (proc_irq_timer    ),
+    .irq_external_o (proc_irq_external ),
+    .irq_fast_o     (proc_irq_fast     ),
+    .irq_nm_o       (proc_irq_nm       ),
+    .debug_req_o    (proc_debug_req    ),
+    .core_sleep_i   (proc_core_sleep   ),
+    .scan_rst_no    (proc_scan_rst_n   )
+  );
 
   // Instanciation du module cve2_top avec les paramètres par défaut
   cve2_top #(
@@ -132,36 +222,36 @@ module cve2 (
     .DmHaltAddr                 (DmHaltAddr              ),
     .DmExceptionAddr            (DmExceptionAddr         )
   ) u_cve2_top (
-    .clk_i                      (clk_i                   ),
-    .rst_ni                     (rst_ni                  ),
-    .test_en_i                  (test_en_i               ),
+    .clk_i                      (proc_clk                ),
+    .rst_ni                     (proc_rst_n              ),
+    .test_en_i                  (proc_test_en            ),
     .ram_cfg_i                  (ram_cfg_i               ),
     .hart_id_i                  (hart_id_i               ),
     .boot_addr_i                (boot_addr_i             ),
-    .instr_req_o                (instr_req_o             ),
-    .instr_gnt_i                (instr_gnt_i             ),
-    .instr_rvalid_i             (instr_rvalid_i          ),
-    .instr_addr_o               (instr_addr_o            ),
-    .instr_rdata_i              (instr_rdata_i           ),
+    .instr_req_o                (proc_instr_req          ),
+    .instr_gnt_i                (proc_instr_gnt          ),
+    .instr_rvalid_i             (proc_instr_rvalid       ),
+    .instr_addr_o               (proc_instr_addr         ),
+    .instr_rdata_i              (proc_instr_rdata        ),
     .instr_rdata_intg_i         (7'b0000000              ),
-    .instr_err_i                (instr_err_i             ),
-    .data_req_o                 (data_req_o              ),
-    .data_gnt_i                 (data_gnt_i              ),
-    .data_rvalid_i              (data_rvalid_i           ),
-    .data_we_o                  (data_we_o               ),
-    .data_be_o                  (data_be_o               ),
-    .data_addr_o                (data_addr_o             ),
-    .data_wdata_o               (data_wdata_o            ),
+    .instr_err_i                (proc_instr_err          ),
+    .data_req_o                 (proc_data_req           ),
+    .data_gnt_i                 (proc_data_gnt           ),
+    .data_rvalid_i              (proc_data_rvalid        ),
+    .data_we_o                  (proc_data_we            ),
+    .data_be_o                  (proc_data_be            ),
+    .data_addr_o                (proc_data_addr          ),
+    .data_wdata_o               (proc_data_wdata         ),
     .data_wdata_intg_o          (dummy_data_wdata_intg_o ),
-    .data_rdata_i               (data_rdata_i            ),
+    .data_rdata_i               (proc_data_rdata         ),
     .data_rdata_intg_i          (7'b0000000              ),
-    .data_err_i                 (data_err_i              ),
-    .irq_software_i             (irq_software_i          ),
-    .irq_timer_i                (irq_timer_i             ),
-    .irq_external_i             (irq_external_i          ),
-    .irq_fast_i                 (irq_fast_i              ),
-    .irq_nm_i                   (irq_nm_i                ),
-    .debug_req_i                (debug_req_i             ),
+    .data_err_i                 (proc_data_err           ),
+    .irq_software_i             (proc_irq_software       ),
+    .irq_timer_i                (proc_irq_timer          ),
+    .irq_external_i             (proc_irq_external       ),
+    .irq_fast_i                 (proc_irq_fast           ),
+    .irq_nm_i                   (proc_irq_nm             ),
+    .debug_req_i                (proc_debug_req          ),
     .crash_dump_o               (dummy_crash_dump_o      ),
 `ifdef RVFI
     .rvfi_valid                 (rvfi_valid              ),
@@ -195,8 +285,8 @@ module cve2 (
     .alert_minor_o              (open                    ),
     .alert_major_internal_o     (open                    ),
     .alert_major_bus_o          (open                    ),
-    .core_sleep_o               (core_sleep_o            ),
-    .scan_rst_ni                (scan_rst_ni             )
+    .core_sleep_o               (proc_core_sleep         ),
+    .scan_rst_ni                (proc_scan_rst_n         )
   );
 	
 `ifdef RVFI
