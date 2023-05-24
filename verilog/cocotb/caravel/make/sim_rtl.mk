@@ -53,7 +53,7 @@ MODULE := caravel_tests
 # Simulateur
 #SIM := questa
 SIM := questa
-GUI := 1
+GUI := 0
 
 # Arguments de compilation pour définir les macros
 ifeq ($(SIM),questa)
@@ -66,6 +66,7 @@ ifeq ($(SIM),questa)
 	COMPILE_ARGS += +define+MAIN_PATH=$(VERILOG_ROOT)/dv/cocotb/
 	COMPILE_ARGS += +define+IVERILOG
 	COMPILE_ARGS += +define+TAG=\\\"DUMMY_TAG\\\"
+	COMPILE_ARGS += +define+RVFI
 	VLOG_ARGS    := -mfcu -suppress 2892,2388
 	#EXTRA_ARGS   := 
 	SIM_ARGS     := -suppress 3009

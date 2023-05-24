@@ -55,6 +55,8 @@ $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2-core-local/rtl/cve2_prefetc
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2-core-local/rtl/cve2_fetch_fifo.sv                           )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2-core-local/rtl/cve2_pmp.sv                                  )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2-core-local/rtl/cve2_core.sv                                 )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2-core-local/rtl/cve2_tracer_pkg.sv                           ) ##Not added in sv2v conversion (only for RVFI)
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2-core-local/rtl/cve2_tracer.sv                               ) ##Not added in sv2v conversion (only for RVFI)
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2-core-local/rtl/cve2_top.sv                                  )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2.sv                                                          )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/wb2axi/wbm2axisp.v                                                    )
@@ -78,12 +80,14 @@ $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/core2axi.sv                      
 ###$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/axi_bus.sv                                                        )
 ###$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/core2axi_wrap.sv                                                  )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi_ram/axi_ram_1kB.sv                                                )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi_ram/axi_ram_2kB.sv                                                ) ##Not added in sv2v conversion
 
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/beh/sky130_sram_1kbyte_1rw1r_32x256_8.v                                   )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/beh/sky130_sram_2kbyte_1rw1r_32x512_8.v                                   ) ##Not added in sv2v conversion
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/main_partition.sv                                                     )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/user_project_wrapper.v                                                )
 
-#Not added in sv2v conversion
+##Not added in sv2v conversion
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/stream_mux.sv          )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/stream_fork.sv         )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/stream_fifo.sv         )
