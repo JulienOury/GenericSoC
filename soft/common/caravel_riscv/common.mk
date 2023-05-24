@@ -59,6 +59,7 @@ compile: ${PROGRAM:=.hex}
 	-I$(VERILOG_PATH)/dv/generated \
 	-I$(VERILOG_PATH)/dv/ \
 	-I$(VERILOG_PATH)/common \
+	-I$(COMMON_DIR)/.. \
 	  $(CPUFLAGS) \
 	-Wl,-Bstatic,-T,$(LINKER_SCRIPT),--strip-debug \
 	-ffreestanding -nostdlib -o $@ $(SOURCE_FILES) $<
