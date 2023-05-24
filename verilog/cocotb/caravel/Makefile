@@ -75,6 +75,7 @@ simu: clean_simu
 clean_simu:
 
 	# files
+	rm -f  $(CUR_MK_DIR)/*.hex
 	rm -f  $(CUR_MK_DIR)/*.log
 	rm -f  $(CUR_MK_DIR)/*.ini
 	rm -f  $(CUR_MK_DIR)/*.vcd
@@ -85,6 +86,7 @@ clean_simu:
 	
 	# directories
 	rm -rf $(CUR_MK_DIR)/__pycache__
+	rm -rf $(CUR_MK_DIR)/interfaces/__pycache__
 	rm -rf $(CUR_MK_DIR)/sim
 	rm -rf $(CUR_MK_DIR)/sim_build
 
