@@ -462,10 +462,10 @@ module main_partition(
 // AXI RAM
 ////////////////////////////////////////////////////////////////////////////
 	
-  axi_ram_1kB #(
+  axi_ram_2kB #(
     .ID_WIDTH   (AxiIdWidthSlaves      ), // AXI4+ATOP ID width
     .USER_WIDTH (AxiUserWidth          )  // AXI4+ATOP user width
-  ) inst_axi_ram_1kB (                 
+  ) inst_axi_ram_2kB (                 
 																       
 `ifdef USE_POWER_PINS                  
     .vccd1      (vccd1                 ), // User area 1 1.8V supply
