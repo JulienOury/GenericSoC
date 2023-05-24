@@ -90,6 +90,36 @@ module cve2 (
 	
 	wire [  6:0] dummy_data_wdata_intg_o;
 	wire [127:0] dummy_crash_dump_o     ;
+	
+`ifdef RVFI
+  logic        rvfi_valid         ;
+  logic [63:0] rvfi_order         ;
+  logic [31:0] rvfi_insn          ;
+  logic        rvfi_trap          ;
+  logic        rvfi_halt          ;
+  logic        rvfi_intr          ;
+  logic [ 1:0] rvfi_mode          ;
+  logic [ 1:0] rvfi_ixl           ;
+  logic [ 4:0] rvfi_rs1_addr      ;
+  logic [ 4:0] rvfi_rs2_addr      ;
+  logic [ 4:0] rvfi_rs3_addr      ;
+  logic [31:0] rvfi_rs1_rdata     ;
+  logic [31:0] rvfi_rs2_rdata     ;
+  logic [31:0] rvfi_rs3_rdata     ;
+  logic [ 4:0] rvfi_rd_addr       ;
+  logic [31:0] rvfi_rd_wdata      ;
+  logic [31:0] rvfi_pc_rdata      ;
+  logic [31:0] rvfi_pc_wdata      ;
+  logic [31:0] rvfi_mem_addr      ;
+  logic [ 3:0] rvfi_mem_rmask     ;
+  logic [ 3:0] rvfi_mem_wmask     ;
+  logic [31:0] rvfi_mem_rdata     ;
+  logic [31:0] rvfi_mem_wdata     ;
+  logic [31:0] rvfi_ext_mip       ;
+  logic        rvfi_ext_nmi       ;
+  logic        rvfi_ext_debug_req ;
+  logic [63:0] rvfi_ext_mcycle    ;
+`endif
 
   // Instanciation du module cve2_top avec les paramètres par défaut
   cve2_top #(
@@ -134,33 +164,33 @@ module cve2 (
     .debug_req_i                (debug_req_i             ),
     .crash_dump_o               (dummy_crash_dump_o      ),
 `ifdef RVFI
-    .rvfi_valid                 (open                    ),
-    .rvfi_order                 (open                    ),
-    .rvfi_insn                  (open                    ),
-    .rvfi_trap                  (open                    ),
-    .rvfi_halt                  (open                    ),
-    .rvfi_intr                  (open                    ),
-    .rvfi_mode                  (open                    ),
-    .rvfi_ixl                   (open                    ),
-    .rvfi_rs1_addr              (open                    ),
-    .rvfi_rs2_addr              (open                    ),
-    .rvfi_rs3_addr              (open                    ),
-    .rvfi_rs1_rdata             (open                    ),
-    .rvfi_rs2_rdata             (open                    ),
-    .rvfi_rs3_rdata             (open                    ),
-    .rvfi_rd_addr               (open                    ),
-    .rvfi_rd_wdata              (open                    ),
-    .rvfi_pc_rdata              (open                    ),
-    .rvfi_pc_wdata              (open                    ),
-    .rvfi_mem_addr              (open                    ),
-    .rvfi_mem_rmask             (open                    ),
-    .rvfi_mem_wmask             (open                    ),
-    .rvfi_mem_rdata             (open                    ),
-    .rvfi_mem_wdata             (open                    ),
-    .rvfi_ext_mip               (open                    ),
-    .rvfi_ext_nmi               (open                    ),
-    .rvfi_ext_debug_req         (open                    ),
-    .rvfi_ext_mcycle            (open                    ),
+    .rvfi_valid                 (rvfi_valid              ),
+    .rvfi_order                 (rvfi_order              ),
+    .rvfi_insn                  (rvfi_insn               ),
+    .rvfi_trap                  (rvfi_trap               ),
+    .rvfi_halt                  (rvfi_halt               ),
+    .rvfi_intr                  (rvfi_intr               ),
+    .rvfi_mode                  (rvfi_mode               ),
+    .rvfi_ixl                   (rvfi_ixl                ),
+    .rvfi_rs1_addr              (rvfi_rs1_addr           ),
+    .rvfi_rs2_addr              (rvfi_rs2_addr           ),
+    .rvfi_rs3_addr              (rvfi_rs3_addr           ),
+    .rvfi_rs1_rdata             (rvfi_rs1_rdata          ),
+    .rvfi_rs2_rdata             (rvfi_rs2_rdata          ),
+    .rvfi_rs3_rdata             (rvfi_rs3_rdata          ),
+    .rvfi_rd_addr               (rvfi_rd_addr            ),
+    .rvfi_rd_wdata              (rvfi_rd_wdata           ),
+    .rvfi_pc_rdata              (rvfi_pc_rdata           ),
+    .rvfi_pc_wdata              (rvfi_pc_wdata           ),
+    .rvfi_mem_addr              (rvfi_mem_addr           ),
+    .rvfi_mem_rmask             (rvfi_mem_rmask          ),
+    .rvfi_mem_wmask             (rvfi_mem_wmask          ),
+    .rvfi_mem_rdata             (rvfi_mem_rdata          ),
+    .rvfi_mem_wdata             (rvfi_mem_wdata          ),
+    .rvfi_ext_mip               (rvfi_ext_mip            ),
+    .rvfi_ext_nmi               (rvfi_ext_nmi            ),
+    .rvfi_ext_debug_req         (rvfi_ext_debug_req      ),
+    .rvfi_ext_mcycle            (rvfi_ext_mcycle         ),
 `endif
     .alert_minor_o              (open                    ),
     .alert_major_internal_o     (open                    ),
@@ -168,4 +198,39 @@ module cve2 (
     .core_sleep_o               (core_sleep_o            ),
     .scan_rst_ni                (scan_rst_ni             )
   );
+	
+`ifdef RVFI
+  cve2_tracer
+  u_cve2_tracer (
+    .clk_i,
+    .rst_ni,
+
+    .hart_id_i,
+
+    .rvfi_valid,
+    .rvfi_order,
+    .rvfi_insn,
+    .rvfi_trap,
+    .rvfi_halt,
+    .rvfi_intr,
+    .rvfi_mode,
+    .rvfi_ixl,
+    .rvfi_rs1_addr,
+    .rvfi_rs2_addr,
+    .rvfi_rs3_addr,
+    .rvfi_rs1_rdata,
+    .rvfi_rs2_rdata,
+    .rvfi_rs3_rdata,
+    .rvfi_rd_addr,
+    .rvfi_rd_wdata,
+    .rvfi_pc_rdata,
+    .rvfi_pc_wdata,
+    .rvfi_mem_addr,
+    .rvfi_mem_rmask,
+    .rvfi_mem_wmask,
+    .rvfi_mem_rdata,
+    .rvfi_mem_wdata
+  );
+`endif
+
 endmodule
