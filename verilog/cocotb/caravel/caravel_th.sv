@@ -24,7 +24,7 @@
 module caravel_th ;
 
 // parameter FILENAME = {"hex_files/",`TESTNAME,".hex"};
-parameter FILENAME={"hex_files/",`TESTNAME,"/",`TESTNAME,".hex"};
+parameter FILENAME={"caravel_th.hex"};
 
 
 // initial begin
@@ -46,57 +46,40 @@ parameter FILENAME={"hex_files/",`TESTNAME,"/",`TESTNAME,".hex"};
 //   `endif
 //   `endif // VCS
 
-  reg power1    ;
-  reg power2    ;
-  reg clock_tb  ; // CMOS core clock input; not a crystal
-  reg resetb_tb ; // Reset input (sense inverted)
-
-  wire gpio             ; // Used for external LDO control
+  wire vddio            ; // Common 3.3V padframe/ESD power
+  wire vddio_2          ; // Common 3.3V padframe/ESD power
+  wire vssio            ; // Common padframe/ESD ground
+  wire vssio_2          ; // Common padframe/ESD ground
+  wire vdda             ; // Management 3.3V power
+  wire vssa             ; // Common analog ground
+  wire vccd             ; // Management/Common 1.8V power
+  wire vssd             ; // Common digital ground
+  wire vdda1            ; // User area 1 3.3V power
+  wire vdda1_2          ; // User area 1 3.3V power
+  wire vdda2            ; // User area 2 3.3V power
+  wire vssa1            ; // User area 1 analog ground
+  wire vssa1_2          ; // User area 1 analog ground
+  wire vssa2            ; // User area 2 analog ground
+  wire vccd1            ; // User area 1 1.8V power
+  wire vccd2            ; // User area 2 1.8V power
+  wire vssd1            ; // User area 1 digital ground
+  wire vssd2            ; // User area 2 digital ground
+  reg  clk_en           ; // Clock enable
+  reg  clk              ; // Clock
+  reg  rst_n            ; // Reset input (sense inverted)
+  wire gpio             ;
   wire [38-1:0] mprj_io ;
-
-  // Note that only two flash data pins are dedicated to the
-  // management SoC wrapper.  The management SoC exports the
-  // quad SPI mode status to make use of the top two mprj_io
-  // pins for io2 and io3.
-
-  wire flash_csb_tb;
-  wire flash_clk_tb;
-  wire flash_io0_tb;
-  wire flash_io1_tb;
-	
-  initial begin
-    resetb_tb <= 1'b0;
-    #2000;
-    resetb_tb <= 1'b1; // Release reset
-  end
-
-  initial begin    // Power-up sequence
-    power1 <= 1'b0;
-    power2 <= 1'b0;
-    #200;
-    power1 <= 1'b1;
-    #200;
-    power2 <= 1'b1;
-  end
+  wire flash_csb        ;
+  wire flash_clk        ;
+  wire flash_io0        ;
+  wire flash_io1        ;
     
-  always #12.5 clock_tb <= (clock_tb === 1'b0);
-
+  // Clock generation
   initial begin
-    clock_tb = 0;
+	  clk_en = 0;
+    clk    = 0;
   end
-	
-  initial begin    // Power-up sequence
-    power1 <= 1'b0;
-    power2 <= 1'b0;
-    #200;
-    power1 <= 1'b1;
-    #200;
-    power2 <= 1'b1;
-  end
-	
-  wire VDD3V3 = power1;
-  wire VDD1V8 = power2;
-  wire VSS    = 1'b0;
+  always #12.5 clk <= (clk === 1'b0) && (clk_en == 1'b1);
 	
 	reg reload_file;
   initial begin
@@ -109,44 +92,44 @@ caravan uut (
 `else
 caravel uut (
 `endif
-    .vddio     (VDD3V3       ), // Common 3.3V padframe/ESD power
-    .vddio_2   (VDD3V3       ), // Common 3.3V padframe/ESD power   
-    .vssio     (VSS          ), // Common padframe/ESD ground
-    .vssio_2   (VSS          ), // Common padframe/ESD ground
-    .vdda      (VDD3V3       ), // Management 3.3V power
-    .vssa      (VSS          ), // Common analog ground
-    .vccd      (VDD1V8       ), // Management/Common 1.8V power
-    .vssd      (VSS          ), // Common digital ground
-    .vdda1     (VDD3V3       ), // User area 1 3.3V power
-    .vdda1_2   (VDD3V3       ), // User area 1 3.3V power
-    .vdda2     (VDD3V3       ), // User area 2 3.3V power
-    .vssa1     (VSS          ), // User area 1 analog ground
-    .vssa1_2   (VSS          ), // User area 1 analog ground
-    .vssa2     (VSS          ), // User area 2 analog ground
-    .vccd1     (VDD1V8       ), // User area 1 1.8V power
-    .vccd2     (VDD1V8       ), // User area 2 1.8V power
-    .vssd1     (VSS          ), // User area 1 digital ground
-    .vssd2     (VSS          ), // User area 2 digital ground
-    .clock     (clock_tb     ),
-    .gpio      (gpio         ),
-    .mprj_io   (mprj_io      ),
-    .flash_csb (flash_csb_tb ),
-    .flash_clk (flash_clk_tb ),
-    .flash_io0 (flash_io0_tb ),
-    .flash_io1 (flash_io1_tb ),
-    .resetb    (resetb_tb    )
+    .vddio     (vddio     ), // Common 3.3V padframe/ESD power
+    .vddio_2   (vddio_2   ), // Common 3.3V padframe/ESD power   
+    .vssio     (vssio     ), // Common padframe/ESD ground
+    .vssio_2   (vssio_2   ), // Common padframe/ESD ground
+    .vdda      (vdda      ), // Management 3.3V power
+    .vssa      (vssa      ), // Common analog ground
+    .vccd      (vccd      ), // Management/Common 1.8V power
+    .vssd      (vssd      ), // Common digital ground
+    .vdda1     (vdda1     ), // User area 1 3.3V power
+    .vdda1_2   (vdda1_2   ), // User area 1 3.3V power
+    .vdda2     (vdda2     ), // User area 2 3.3V power
+    .vssa1     (vssa1     ), // User area 1 analog ground
+    .vssa1_2   (vssa1_2   ), // User area 1 analog ground
+    .vssa2     (vssa2     ), // User area 2 analog ground
+    .vccd1     (vccd1     ), // User area 1 1.8V power
+    .vccd2     (vccd2     ), // User area 2 1.8V power
+    .vssd1     (vssd1     ), // User area 1 digital ground
+    .vssd2     (vssd2     ), // User area 2 digital ground
+    .clock     (clk       ),
+    .gpio      (gpio      ),
+    .mprj_io   (mprj_io   ),
+    .flash_csb (flash_csb ),
+    .flash_clk (flash_clk ),
+    .flash_io0 (flash_io0 ),
+    .flash_io1 (flash_io1 ),
+    .resetb    (rst_n     )
   );
 
   reloadable_spiflash #(
     FILENAME
   ) spiflash (
-	  .reload_file(reload_file ),
-    .csb        (flash_csb_tb),
-    .clk        (flash_clk_tb),
-    .io0        (flash_io0_tb),
-    .io1        (flash_io1_tb),
-    .io2        (            ), // not used
-    .io3        (            )  // not used
+	  .reload_file(reload_file),
+    .csb        (flash_csb  ),
+    .clk        (flash_clk  ),
+    .io0        (flash_io0  ),
+    .io1        (flash_io1  ),
+    .io2        (           ), // not used
+    .io3        (           )  // not used
   );
 
   mac macros();
