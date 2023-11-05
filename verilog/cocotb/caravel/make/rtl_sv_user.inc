@@ -31,6 +31,10 @@ endif
 ##########################################################################
 
 $(eval $(LIST_NAME) += $(CARAVEL_ROOT)/verilog/rtl/defines.v                                                     )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/common_cells/src/onehot_to_bin.sv                      )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/common_cells/src/cf_math_pkg.sv                      )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/common_cells/src/id_queue.sv                      )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/common_cells/src/lzc.sv                      )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2-core-local/syn/rtl/prim_clock_gating.v                      )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2-core-local/vendor/lowrisc_ip/ip/prim/rtl/prim_assert.sv     )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/cve2/cve2-core-local/vendor/lowrisc_ip/ip/prim/rtl/prim_secded_pkg.sv )
@@ -77,14 +81,30 @@ $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/axi_id_prepend.sv                
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/axi_to_mem.sv                                                     )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/axi_demux.sv                                                      )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/core2axi.sv                                                       )
-###$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/axi_bus.sv                                                        )
-###$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/core2axi_wrap.sv                                                  )
+###$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/axi_bus.sv                                                     )
+###$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/core2axi_wrap.sv                                               )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi_ram/axi_ram_1kB.sv                                                )
-$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi_ram/axi_ram_2kB.sv                                                ) ##Not added in sv2v conversion
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi_ram/axi_ram_2kB.sv                                                )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/axi_lite_regs.sv                                                  )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/axi_to_axi_lite.sv                                                )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/axi_lite_to_axi.sv                                                )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/axi/axi_burst_splitter.sv                                                )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/foc/adc_ad7928.sv                                                     )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/foc/foc2axi_lite.sv                                                   )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/foc/i2c_register_read.sv                                              )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/foc/cartesian2polar.sv                                                )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/foc/clark_tr.sv                                                       )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/foc/foc_top.sv                                                        )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/foc/hold_detect.sv                                                    )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/foc/park_tr.sv                                                        )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/foc/pi_controller.sv                                                  )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/foc/sincos.sv                                                         )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/foc/svpwm.sv                                                          )##Not added in sv2v conversion
 
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/beh/sky130_sram_1kbyte_1rw1r_32x256_8.v                                   )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/beh/sky130_sram_2kbyte_1rw1r_32x512_8.v                                   ) ##Not added in sv2v conversion
-$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/main_partition.sv                                                     )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/main_partition.sv       )
+$(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/main_partition_test.sv                                                )
 $(eval $(LIST_NAME) += $(VERILOG_ROOT)/rtl/user_project_wrapper.v                                                )
 
 ##Not added in sv2v conversion

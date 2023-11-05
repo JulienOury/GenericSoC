@@ -59,7 +59,7 @@ clean: clean_simu
 simu: clean_simu
 
 	mkdir  $(CUR_MK_DIR)/sim
-	
+
 	# Start cocotb simulation
 	@{ \
 	export MCW_ROOT=$(MCW_ROOT);\
@@ -83,12 +83,11 @@ clean_simu:
 	rm -f  $(CUR_MK_DIR)/*.wlf
 	rm -f  $(CUR_MK_DIR)/transcript
 	rm -f  $(CUR_MK_DIR)/results.xml
-	
+
 	# directories
 	rm -rf $(CUR_MK_DIR)/__pycache__
 	rm -rf $(CUR_MK_DIR)/interfaces/__pycache__
 	rm -rf $(CUR_MK_DIR)/sim
 	rm -rf $(CUR_MK_DIR)/sim_build
-
 
 ##########################################################################

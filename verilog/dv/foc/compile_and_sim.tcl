@@ -48,13 +48,15 @@ vlog $vlog_option -work axi_lite_lib $axi_lite_path/spill_register.sv
 vlog $vlog_option -work axi_lite_lib $axi_lite_path/spill_register_flushable.sv
 vlog $vlog_option -work axi_lite_lib $axi_lite_path/axi_test.sv
 vlog $vlog_option -work axi_lite_lib $axi_lite_path/axi_intf.sv
+vlog $vlog_option -work axi_lite_lib $axi_lite_path/axi_to_axi_lite.sv
 
 #Compile fpga_foc_top sources
 create_lib sim_dir foc_lib
 
 quietly set foc_path "../../rtl/foc"
 vlog $vlog_option -work foc_lib $foc_path/adc_ad7928.sv
-vlog $vlog_option -work foc_lib $foc_path/foc_ctrl_top.sv
+#vlog $vlog_option -work foc_lib $foc_path/foc_ctrl_top.sv
+vlog $vlog_option -work foc_lib $foc_path/foc2axi_lite.sv
 vlog $vlog_option -work foc_lib $foc_path/i2c_register_read.sv
 vlog $vlog_option -work foc_lib $foc_path/cartesian2polar.sv
 vlog $vlog_option -work foc_lib $foc_path/clark_tr.sv
@@ -71,10 +73,10 @@ quietly set testbench_path "."
 
 vlog $vlog_option -work tb_lib -L foc_lib $testbench_path/tb_clark_park_tr.sv
 vlog $vlog_option -work tb_lib -L foc_lib $testbench_path/tb_svpwm.sv
-vlog $vlog_option -work tb_lib -L axi_lite_lib $testbench_path/tb_foc_ctrl_top.sv
+#vlog $vlog_option -work tb_lib -L axi_lite_lib $testbench_path/tb_foc_ctrl_top.sv
 
 # Start simulation
-vsim -voptargs=+acc -L foc_lib -L tb_lib -L axi_lite_lib tb_lib.tb_foc_ctrl_top
-log * -r
+#vsim -voptargs=+acc -L foc_lib -L tb_lib -L axi_lite_lib foc_lib.foc2axi_lite
+#log * -r
 
 do wave.do

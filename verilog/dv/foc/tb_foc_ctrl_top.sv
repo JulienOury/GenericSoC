@@ -113,24 +113,29 @@ module tb_foc_ctrl_top #(
     // Test known register.
     // Write to it.
 
-    //id_aim fixe à 0
+    //iq_aim fixe à 0
     lite_axi_master.write(axi_addr_t'(32'h0000_0000), axi_pkg::prot_t'('0),
-        axi_data_t'(32'h00000200), axi_strb_t'(4'hC), resp);
+        axi_data_t'(32'h00000200), axi_strb_t'(4'h3), resp);
+    $info("id_aim set at 200 ");
+    
+    //id_aim
+    lite_axi_master.read(axi_addr_t'(32'h0000_0000), axi_pkg::prot_t'('0), data, resp);
+    $info("id_aim read at : ", data);
 
     //ctrl_reg
-    lite_axi_master.write(axi_addr_t'(32'h0000_000C), axi_pkg::prot_t'('0),
+    lite_axi_master.write(axi_addr_t'(32'h0000_0004), axi_pkg::prot_t'('0),
         axi_data_t'(32'h00000001), axi_strb_t'(4'h3), resp);
 
     // Read to it.
 
     //iq_aim
-    lite_axi_master.read(axi_addr_t'(32'h0000_0004), axi_pkg::prot_t'('0), data, resp);
+    lite_axi_master.read(axi_addr_t'(32'h0000_0000), axi_pkg::prot_t'('0), data, resp);
     //iq
-    lite_axi_master.read(axi_addr_t'(32'h0000_0006), axi_pkg::prot_t'('0), data, resp);
+    lite_axi_master.read(axi_addr_t'(32'h0000_0004), axi_pkg::prot_t'('0), data, resp);
     //id_aim
-    lite_axi_master.read(axi_addr_t'(32'h0000_0008), axi_pkg::prot_t'('0), data, resp);
+    lite_axi_master.read(axi_addr_t'(32'h0000_0002), axi_pkg::prot_t'('0), data, resp);
     //id
-    lite_axi_master.read(axi_addr_t'(32'h0000_000A), axi_pkg::prot_t'('0), data, resp);
+    lite_axi_master.read(axi_addr_t'(32'h0000_0008), axi_pkg::prot_t'('0), data, resp);
 
     // alternative courant
     for (int i = 0; i < 200; i++) begin

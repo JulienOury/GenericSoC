@@ -42,6 +42,7 @@ from   interfaces.hex_file_manager import HexFileManager
 SOFT_DIR = '../../../soft/'
 BOOTLOADER_PATH   = f'{SOFT_DIR}caravel_bootloader/caravel_bootloader.hex'
 HELLO_TEST_PATH   = f'{SOFT_DIR}hello_test/hello_test.hex'
+FOC_TEST_PATH   = f'{SOFT_DIR}foc_test/foc_test.hex'
 
 FLASH_PROG_PATH   = 'caravel_th.hex'
 FLASH_PROG_OFFSET = 0x00800000 #8MB
@@ -69,7 +70,7 @@ async def test_boot(dut):
   # Generate test program
   cocotb.log.info(f"Generate test program")
   hex_file_mng = HexFileManager(FLASH_PROG_PATH)
-  hex_file_mng.generate_program_with_bootloader(BOOTLOADER_PATH, HELLO_TEST_PATH, FLASH_PROG_OFFSET)
+  hex_file_mng.generate_program_with_bootloader(BOOTLOADER_PATH, FOC_TEST_PATH, FLASH_PROG_OFFSET)
   
   # Load program file
   cocotb.log.info(f"Load program file")

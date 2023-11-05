@@ -24,6 +24,9 @@
 #define reg_mprj_internal_ram  (*(volatile uint32_t*)0x30000000)
 #define reg_mprj_sys_mng       (*(volatile uint32_t*)0x30001000)
 
+// User FOC CTRL (0x3000_2000)
+#define reg_mprj_foc_ctrl (*(volatile uint32_t*)0x30002000)
+
 #define SYS_MNG_START_CODE     ((uint32_t) 0x1A2B3C01)
 #define SYS_MNG_STOP_CODE      ((uint32_t) 0x1A2B3C00)
 

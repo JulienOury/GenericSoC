@@ -53,7 +53,7 @@ MODULE := caravel_tests
 # Simulateur
 #SIM := questa
 SIM := questa
-GUI := 0
+GUI := 1
 
 # Arguments de compilation pour définir les macros
 ifeq ($(SIM),questa)
@@ -68,7 +68,7 @@ ifeq ($(SIM),questa)
 	COMPILE_ARGS += +define+TAG=\\\"DUMMY_TAG\\\"
 	COMPILE_ARGS += +define+RVFI
 	VLOG_ARGS    := -mfcu -suppress 2892,2388
-	#EXTRA_ARGS   := 
+	#EXTRA_ARGS   :=
 	SIM_ARGS     := -suppress 3009
 	#SCRIPT_FILE  := $(CUR_MK_DIR)/../wave.do
 endif
@@ -95,12 +95,12 @@ LIST_NAME       := VERILOG_SOURCES
 VERILOG_SOURCES :=
 
 # Include caravel RTL sources
-include $(CUR_MK_DIR)/rtl_caravel.inc 
+include $(CUR_MK_DIR)/rtl_caravel.inc
 
 
 # Include user RTL sources
-#include $(CUR_MK_DIR)/rtl_v_user.inc 
-include $(CUR_MK_DIR)/rtl_sv_user.inc 
+#include $(CUR_MK_DIR)/rtl_v_user.inc
+include $(CUR_MK_DIR)/rtl_sv_user.inc
 
 VERILOG_SOURCES += $(VERILOG_ROOT)/cocotb/caravel/caravel_th.sv
 

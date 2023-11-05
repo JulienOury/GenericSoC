@@ -173,11 +173,9 @@ always @ (posedge clk_50m)
         reg_d_i[13:0] <= 32'h0;
     end else begin
         if (en_idq == 1'b1) begin
-            reg_load_i[11:4] <= 8'hFF;
-            reg_d_i[11:10] <= id;
-            reg_d_i[9:8] <= id_aim;
-            reg_d_i[7:6] <= iq;
-            reg_d_i[5:4] <= iq_aim;
+            reg_load_i[7:4] <= 8'hFF;
+            reg_d_i[7:6] <= id;
+            reg_d_i[5:4] <= iq;
         end else begin 
             reg_load_i[11:4] <= 8'h00;
         end
@@ -191,7 +189,7 @@ always @ (posedge clk_50m)
     end else begin
         iq_aim <= reg_q_o[1:0];
         id_aim <= reg_q_o[3:2];
-        ctrl_reg <= reg_q_o[13:12];
+        ctrl_reg <= reg_q_o[9:8];
     end
 
 always_ff @(posedge clk_50m or negedge rstn) begin
@@ -222,6 +220,7 @@ assign clk_int = (ctrl_reg[0] == 1) ? Q : clk_50m;
   //-----------------------------------
   // AXI_Lite Interface
   //-----------------------------------
+  
   axi_lite_regs_intf #(
     .REG_NUM_BYTES  ( REG_NUM_BYTES  ),
     .AXI_ADDR_WIDTH ( AxiAddrWidth   ),

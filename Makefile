@@ -109,6 +109,9 @@ cocotb_names    := $(filter-out common,$(cocotb_names))
 .PHONY: cocotb_all_%
 cocotb_all_%:
 	for i in $(cocotb_names); do \
+		export PATH="/home/moriko/soft/questasim/linux_x86_64:$(PATH)";\
+		export PATH="/home/moriko/soft/questasim/RUVM_2021.2:$(PATH)";\
+		export LM_LICENSE_FILE="/home/moriko/soft/license.dat:$(LM_LICENSE_FILE)";\
 		export PATH=$(PATH);\
 		export MCW_ROOT=$(MCW_ROOT);\
 		export CARAVEL_ROOT=$(CARAVEL_ROOT);\
@@ -149,4 +152,3 @@ simlink: check-caravel
 #	ln -sf $(MAKEFILE_PATH) Makefile
 #	cd openlane/user_project_wrapper &&\
 #	ln -sf $(PIN_CFG_PATH) pin_order.cfg
-
